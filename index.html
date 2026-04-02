@@ -1,1 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Uma proposta para a Flor &amp; Sentido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sage: #7A9E7E;
+  --sage-light: #A8C5AC;
+  --sage-dark: #4E7153;
+  --cream: #FAF7F2;
+  --warm-white: #FDFCFA;
+  --blush: #E8C5B0;
+  --blush-deep: #D4956A;
+  --forest: #2D4A30;
+  --charcoal: #2A2A2A;
+  --mid: #5A5A5A;
+  --soft: #9A9A9A;
+  --border: rgba(122,158,126,0.2);
+  --shadow-soft: 0 4px 30px rgba(45,74,48,0.08);
+  --shadow-card: 0 8px 40px rgba(45,74,48,0.12);
+  --radius: 20px;
+  --radius-sm: 12px;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--warm-white); color: var(--charcoal); overflow-x: hidden; line-height: 1.7; }
+
+h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 500; line-height: 1.15; }
+h1 { font-size: clamp(3rem, 6.5vw, 6rem); }
+h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+h3 { font-size: clamp(1.2rem, 2vw, 1.7rem); }
+p  { font-size: clamp(0.95rem, 1.5vw, 1.05rem); color: var(--mid); }
+
+.container { max-width: 1160px; margin: 0 auto; padding: 0 clamp(1.2rem, 5vw, 3rem); }
+.section    { padding: clamp(5rem, 10vw, 9rem) 0; }
+.section-alt { background: var(--cream); }
+
+.tag {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--sage-dark); background: rgba(122,158,126,0.12);
+  padding: 6px 16px; border-radius: 100px; margin-bottom: 1.2rem;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1rem;
+  padding: 16px 36px; border-radius: 100px;
+  cursor: pointer; transition: all 0.3s ease; text-decoration: none; border: none;
+}
+.btn-primary { background: var(--forest); color: white; box-shadow: 0 8px 30px rgba(45,74,48,0.3); }
+.btn-primary:hover { background: var(--sage-dark); transform: translateY(-2px); }
+.btn-whatsapp { background: #25D366; color: white; box-shadow: 0 8px 30px rgba(37,211,102,0.3); }
+.btn-whatsapp:hover { background: #1ebe5d; transform: translateY(-2px); }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.4rem 0; transition: all 0.4s ease; }
+nav.scrolled { background: rgba(253,252,250,0.94); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0.9rem 0; }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; color: white; text-decoration: none; transition: color 0.3s; display: flex; flex-direction: column; line-height: 1.15; }
+.nav-logo small { font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+nav.scrolled .nav-logo { color: var(--forest); }
+nav.scrolled .nav-logo small { color: var(--soft); }
+.nav-cta { display: none; align-items: center; gap: 8px; font-size: 0.88rem; padding: 10px 22px; background: var(--forest); color: white; border-radius: 100px; text-decoration: none; font-weight: 500; transition: all 0.3s; }
+nav.scrolled .nav-cta { display: flex; }
+.nav-cta:hover { background: var(--sage-dark); }
+
+/* HERO */
+.hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: linear-gradient(140deg, #111e12 0%, #2D4A30 50%, #3a6040 100%); }
+.hero-bg::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 65% 65% at 75% 35%, rgba(168,197,172,0.15) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 15% 85%, rgba(232,197,176,0.1) 0%, transparent 55%); }
+.hero-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(17,30,18,0.9) 45%, rgba(17,30,18,0.2) 100%); z-index: 1; }
+
+.proposal-ribbon { position: absolute; top: 2rem; right: 0; background: var(--blush-deep); color: white; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 8px 28px 8px 20px; border-radius: 4px 0 0 4px; z-index: 3; display: flex; align-items: center; gap: 8px; box-shadow: -4px 4px 20px rgba(0,0,0,0.25); }
+.proposal-ribbon::before { content: '✦'; font-size: 0.6rem; }
+
+.hero-content { position: relative; z-index: 2; padding: 9rem 0 6rem; max-width: 700px; }
+
+.hero-greeting { display: flex; align-items: center; gap: 12px; margin-bottom: 2.5rem; }
+.greeting-line { height: 1px; width: 36px; background: rgba(255,255,255,0.3); }
+.greeting-text { font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 500; }
+
+.hero h1 { color: white; margin-bottom: 1.6rem; font-weight: 400; }
+.hero h1 em { font-style: italic; color: var(--blush); display: block; }
+.hero-sub { font-size: clamp(1rem, 1.7vw, 1.15rem); color: rgba(255,255,255,0.65); margin-bottom: 2.8rem; max-width: 540px; line-height: 1.85; }
+
+.hero-author { display: flex; align-items: center; gap: 14px; margin-top: 3.5rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+.author-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--sage), var(--blush-deep)); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: white; flex-shrink: 0; }
+.author-name { font-size: 0.95rem; color: white; font-weight: 500; }
+.author-role { font-size: 0.77rem; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; }
+
+.scroll-indicator { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.35); font-size: 0.67rem; letter-spacing: 0.15em; text-transform: uppercase; }
+.scroll-line { width: 1px; height: 45px; background: linear-gradient(to bottom, rgba(255,255,255,0.35), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+@keyframes scrollPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+/* INTRO PESSOAL */
+.intro-personal { background: var(--forest); padding: clamp(4rem, 8vw, 6rem) 0; }
+.intro-personal .container { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: center; }
+@media (max-width: 680px) { .intro-personal .container { grid-template-columns: 1fr; gap: 2rem; } }
+.intro-label { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 0.7rem; }
+.intro-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; color: white; line-height: 1; margin-bottom: 0.4rem; }
+.intro-title { font-size: 0.84rem; color: var(--sage-light); letter-spacing: 0.04em; }
+.intro-right blockquote { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.3rem, 2.2vw, 1.9rem); font-weight: 300; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.65; border-left: 2px solid var(--sage); padding-left: 2rem; }
+.intro-right p { color: rgba(255,255,255,0.48); font-size: 0.9rem; margin-top: 1.5rem; padding-left: 2rem; line-height: 1.85; }
+
+/* TWO-COL */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 6vw, 7rem); align-items: center; }
+@media (max-width: 768px) { .two-col { grid-template-columns: 1fr; gap: 2.5rem; } .two-col.reverse .col-img { order: -1; } }
+.col-text h2 { margin-bottom: 1.2rem; color: var(--forest); }
+.col-text p  { margin-bottom: 1.4rem; }
+.col-img { position: relative; }
+.col-img::before { content: ''; position: absolute; width: 75%; height: 75%; border-radius: 50%; background: linear-gradient(135deg, rgba(168,197,172,0.18), rgba(232,197,176,0.12)); top: 12%; left: -8%; z-index: 0; filter: blur(40px); }
+.img-wrap { border-radius: var(--radius); overflow: hidden; position: relative; z-index: 1; box-shadow: var(--shadow-card); }
+.img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.col-img .img-wrap { aspect-ratio: 4/5; }
+.img-placeholder { width: 100%; min-height: 400px; display: flex; align-items: center; justify-content: center; font-size: 5rem; background: linear-gradient(135deg, rgba(168,197,172,0.2), rgba(232,197,176,0.15)); }
+
+/* SECTION HEADER */
+.section-header { max-width: 620px; margin-bottom: 3.5rem; }
+.section-header.center { margin: 0 auto 3.5rem; text-align: center; }
+.section-header h2 { color: var(--forest); margin-bottom: 1rem; }
+
+/* CARDS */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.4rem; margin-top: 3.5rem; }
+.card { background: white; border-radius: var(--radius); padding: 1.8rem 1.8rem 2rem; border: 1px solid var(--border); box-shadow: var(--shadow-soft); transition: all 0.3s ease; position: relative; overflow: hidden; }
+.card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--sage), var(--blush)); opacity: 0; transition: opacity 0.3s; }
+.card:hover { transform: translateY(-5px); box-shadow: var(--shadow-card); }
+.card:hover::before { opacity: 1; }
+.card-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, rgba(122,158,126,0.13), rgba(168,197,172,0.13)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 1.1rem; }
+.card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--forest); }
+.card p  { font-size: 0.9rem; line-height: 1.7; }
+
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; margin: 1.4rem 0; }
+.feature-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; color: var(--mid); }
+.feature-list li::before { content: '✦'; color: var(--sage); font-size: 0.55rem; margin-top: 6px; flex-shrink: 0; }
+
+.highlight-box { background: linear-gradient(135deg, rgba(122,158,126,0.07), rgba(232,197,176,0.07)); border: 1px solid rgba(122,158,126,0.2); border-radius: var(--radius-sm); padding: 1.5rem 1.8rem; margin-top: 1.8rem; }
+.highlight-box p { font-size: 0.92rem; color: var(--charcoal); line-height: 1.75; }
+
+/* STEPS */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; margin-top: 3.5rem; position: relative; }
+.steps::before { content: ''; position: absolute; top: 35px; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--sage-light), transparent); }
+@media (max-width: 600px) { .steps::before { display: none; } .steps { gap: 2rem; } }
+.step { text-align: center; padding: 0 1.2rem; }
+.step-num { width: 70px; height: 70px; border-radius: 50%; background: white; border: 1.5px solid var(--sage-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.4rem; font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--sage-dark); position: relative; z-index: 1; box-shadow: 0 4px 20px rgba(122,158,126,0.12); }
+.step h3 { font-size: 1rem; margin-bottom: 0.4rem; color: var(--forest); }
+.step p  { font-size: 0.86rem; }
+
+/* QUOTE */
+.quote-section { background: var(--forest); padding: clamp(4rem, 8vw, 7rem) 0; text-align: center; }
+.quote-section blockquote { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 3vw, 2.6rem); font-style: italic; color: white; max-width: 720px; margin: 0 auto; line-height: 1.55; font-weight: 300; }
+
+/* DASHBOARD */
+.dashboard-mockup { background: white; border-radius: var(--radius); box-shadow: 0 20px 80px rgba(45,74,48,0.18); overflow: hidden; border: 1px solid var(--border); }
+.mockup-bar { background: var(--forest); padding: 12px 20px; display: flex; align-items: center; gap: 8px; }
+.mockup-dot { width: 12px; height: 12px; border-radius: 50%; }
+.mockup-layout { display: grid; grid-template-columns: 190px 1fr; min-height: 360px; }
+@media (max-width: 600px) { .mockup-layout { grid-template-columns: 1fr; } }
+.mockup-sidebar { background: #f7faf7; border-right: 1px solid var(--border); padding: 1.4rem 1rem; display: flex; flex-direction: column; gap: 3px; }
+.mockup-nav-item { padding: 9px 14px; border-radius: 10px; font-size: 0.82rem; color: var(--mid); display: flex; align-items: center; gap: 10px; transition: all 0.2s; }
+.mockup-nav-item.active { background: var(--forest); color: white; }
+.mockup-main { padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
+.mockup-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+.kpi { background: var(--cream); border-radius: 12px; padding: 1rem; }
+.kpi-val { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--forest); line-height: 1; }
+.kpi-lbl { font-size: 0.7rem; color: var(--soft); margin-top: 4px; }
+.mockup-chart-area { background: var(--cream); border-radius: 12px; padding: 1rem; flex: 1; }
+
+/* BUSINESS FLOW */
+.business-flow { display: flex; align-items: flex-start; flex-wrap: wrap; justify-content: center; gap: 0; margin-top: 3rem; background: var(--cream); border-radius: var(--radius); padding: 2rem 1.5rem; border: 1px solid var(--border); }
+.bflow-step { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; min-width: 150px; max-width: 210px; gap: 0.75rem; padding: 0.5rem; }
+.bflow-icon { width: 54px; height: 54px; border-radius: 16px; background: white; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: var(--shadow-soft); }
+.bflow-text { display: flex; flex-direction: column; gap: 4px; }
+.bflow-text strong { font-size: 0.85rem; font-weight: 600; color: var(--forest); }
+.bflow-text span   { font-size: 0.78rem; color: var(--soft); line-height: 1.5; }
+.bflow-arrow { font-size: 1.3rem; color: var(--sage-light); padding: 0 0.2rem; margin-top: 1.1rem; flex-shrink: 0; }
+@media (max-width: 640px) { .bflow-arrow { display: none; } .bflow-step { max-width: 100%; flex-direction: row; text-align: left; } .business-flow { gap: 1rem; } }
+
+/* PRICING */
+.pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; align-items: start; }
+.plan { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 2.4rem 2rem; position: relative; box-shadow: var(--shadow-soft); transition: all 0.3s; }
+.plan:hover { transform: translateY(-6px); box-shadow: var(--shadow-card); }
+.plan.featured { background: var(--forest); border-color: var(--forest); transform: scale(1.04); }
+.plan.featured:hover { transform: scale(1.04) translateY(-6px); }
+.plan-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--blush-deep); color: white; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 18px; border-radius: 100px; white-space: nowrap; }
+.plan-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; color: var(--forest); margin-bottom: 0.4rem; }
+.plan.featured .plan-name { color: rgba(255,255,255,0.65); }
+.plan-price { font-family: 'Cormorant Garamond', serif; font-size: 3.4rem; font-weight: 300; color: var(--forest); line-height: 1; margin: 0.9rem 0; }
+.plan.featured .plan-price { color: white; }
+.plan-price span { font-size: 1.1rem; vertical-align: top; margin-top: 0.7rem; display: inline-block; }
+.plan-period { font-size: 0.82rem; color: var(--soft); }
+.plan.featured .plan-period { color: rgba(255,255,255,0.45); }
+.plan-desc { font-size: 0.82rem; font-style: italic; color: var(--soft); margin: 0.8rem 0 1.2rem; line-height: 1.6; }
+.plan.featured .plan-desc { color: rgba(255,255,255,0.4); }
+.plan-divider { border: none; border-top: 1px solid var(--border); margin: 1.4rem 0; }
+.plan.featured .plan-divider { border-color: rgba(255,255,255,0.15); }
+.plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+.plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: var(--mid); }
+.plan.featured .plan-features li { color: rgba(255,255,255,0.8); }
+.plan-features li::before { content: '✦'; color: var(--sage); font-size: 0.55rem; margin-top: 5px; flex-shrink: 0; }
+.plan.featured .plan-features li::before { color: var(--blush); }
+
+.plan-info-note { display: flex; gap: 1.2rem; align-items: flex-start; background: linear-gradient(135deg, rgba(45,74,48,0.05), rgba(122,158,126,0.06)); border: 1px solid rgba(122,158,126,0.22); border-left: 4px solid var(--sage); border-radius: var(--radius-sm); padding: 1.8rem 2rem; margin-top: 2.5rem; }
+.pin-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+.plan-info-note strong { display: block; font-size: 1rem; color: var(--forest); margin-bottom: 0.5rem; }
+.plan-info-note p { font-size: 0.9rem; line-height: 1.8; color: var(--mid); }
+
+/* RESULTS */
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.4rem; margin-top: 3.5rem; }
+.result-card { text-align: center; padding: 2.5rem 1.5rem; background: white; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-soft); }
+.result-num { font-family: 'Cormorant Garamond', serif; font-size: 3.8rem; font-weight: 300; color: var(--forest); line-height: 1; display: block; margin-bottom: 0.4rem; }
+.result-card p { font-size: 0.88rem; }
+
+.chart-wrap { background: white; border-radius: var(--radius); padding: 2.5rem; box-shadow: var(--shadow-card); border: 1px solid var(--border); }
+
+/* MINI IMG GRID */
+.mini-img-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; height: 460px; }
+.mini-img-grid .img-wrap:first-child { grid-row: 1 / 3; }
+
+/* CTA FINAL */
+.cta-final { background: linear-gradient(135deg, var(--forest) 0%, #111e12 100%); position: relative; overflow: hidden; padding: clamp(5rem, 10vw, 9rem) 0; }
+.cta-final::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 80% at 80% 20%, rgba(168,197,172,0.1) 0%, transparent 55%), radial-gradient(ellipse 40% 60% at 10% 90%, rgba(232,197,176,0.07) 0%, transparent 50%); }
+.cta-final .container { position: relative; z-index: 1; text-align: center; }
+.cta-final h2 { color: white; margin-bottom: 1rem; }
+.cta-final .sub { color: rgba(255,255,255,0.6); max-width: 520px; margin: 0 auto 0.8rem; font-size: 1rem; }
+.cta-final .assinatura { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; color: rgba(255,255,255,0.35); margin-bottom: 2.8rem; }
+
+/* FLOAT WA */
+.float-wa { position: fixed; bottom: 2rem; right: 2rem; z-index: 200; width: 60px; height: 60px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(37,211,102,0.4); text-decoration: none; animation: floatPulse 3s ease-in-out infinite; transition: transform 0.3s; }
+.float-wa:hover { transform: scale(1.1); }
+.float-wa svg { width: 28px; height: 28px; fill: white; }
+@keyframes floatPulse { 0%,100% { box-shadow: 0 8px 30px rgba(37,211,102,0.4); } 50% { box-shadow: 0 8px 50px rgba(37,211,102,0.6); } }
+
+footer { background: #0f1a10; color: rgba(255,255,255,0.3); text-align: center; padding: 2.5rem; font-size: 0.82rem; line-height: 2; }
+footer span { color: rgba(255,255,255,0.6); }
+footer a { color: var(--sage-light); text-decoration: none; }
+footer a:hover { color: white; }
+
+.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; } .d3 { transition-delay: 0.3s; } .d4 { transition-delay: 0.4s; }
+
+@media (max-width: 480px) { .pricing-grid { grid-template-columns: 1fr; } .plan.featured { transform: scale(1); } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo">
+      Flor &amp; Sentido
+      <small>Uma proposta de Rodrigo</small>
+    </a>
+    <a href="https://wa.me/5511947736808?text=Oi%20Rodrigo,%20gostaria%20de%20falar%20sobre%20o%20app%20de%20flores" target="_blank" class="nav-cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Falar com Rodrigo
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img class="hero-bg-img" src="imagens/hero-flores.jpg" alt="Flores" onerror="this.style.display='none'" />
+    <div class="hero-overlay"></div>
+  </div>
+  <div class="proposal-ribbon">Proposta exclusiva</div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-greeting">
+        <div class="greeting-line"></div>
+        <span class="greeting-text">Preparada especialmente para a Flor &amp; Sentido</span>
+      </div>
+      <h1>
+        Um sistema criado
+        <em>para a sua floricultura crescer.</em>
+      </h1>
+      <p class="hero-sub">
+        Desenvolvi esse projeto pensando especificamente no seu negócio — em como transformar cada cliente que compra uma vez em alguém que volta sempre, e em como criar uma fonte de receita previsível todo mês, independente das datas comemorativas.
+      </p>
+      <a href="https://wa.me/5511947736808?text=Oi%20Rodrigo,%20gostaria%20de%20falar%20sobre%20o%20app%20de%20flores" target="_blank" class="btn btn-whatsapp">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Conversar sobre a proposta
+      </a>
+      <div class="hero-author">
+        <div class="author-avatar">R</div>
+        <div class="author-info">
+          <div class="author-name">Rodrigo</div>
+          <div class="author-role">Criador do projeto · Flor &amp; Sentido</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    Ver a proposta
+  </div>
+</section>
+
+<!-- INTRO PESSOAL -->
+<div class="intro-personal">
+  <div class="container">
+    <div class="intro-left fade-up">
+      <div class="intro-label">Quem apresenta isso</div>
+      <div class="intro-name">Rodrigo</div>
+      <div class="intro-title">Criador do projeto Flor &amp; Sentido</div>
+    </div>
+    <div class="intro-right fade-up d2">
+      <blockquote>
+        "Desenvolvi esse projeto pensando em um problema real: floriculturas que dependem de datas comemorativas para faturar e não conseguem criar uma base de clientes sólida e recorrente."
+      </blockquote>
+      <p>O que você vai ver aqui é uma proposta completa — com funcionalidades pensadas para o dia a dia da Flor &amp; Sentido, um modelo de assinaturas para empresas que gera receita previsível, e ferramentas que fazem seu negócio crescer mesmo quando você não está vendendo ativamente.</p>
+    </div>
+  </div>
+</div>
+
+<!-- O QUE É -->
+<section class="section">
+  <div class="container">
+    <div class="two-col">
+      <div class="col-text fade-up">
+        <div class="tag">O projeto</div>
+        <h2>O que estou propondo para a Flor &amp; Sentido?</h2>
+        <p>Um aplicativo completo desenvolvido especificamente para a sua floricultura — com catálogo digital, CRM de clientes, automações de marketing e um módulo de assinaturas para empresas da região.</p>
+        <p>Tudo em um lugar só, para que você não precise de nenhuma outra ferramenta para gerenciar, vender e crescer.</p>
+        <ul class="feature-list">
+          <li>Seus arranjos em um catálogo bonito no celular dos seus clientes</li>
+          <li>Pedidos feitos em segundos, sem ligação, sem formulário</li>
+          <li>O sistema registra tudo automaticamente — você acompanha pelo painel</li>
+          <li>Empresas da cidade assinam planos para homenagear seus funcionários</li>
+          <li>Receita previsível todo mês, independente de datas comemorativas</li>
+        </ul>
+      </div>
+      <div class="col-img fade-up d2">
+        <div class="img-wrap">
+          <img src="imagens/visao-geral.jpg" alt="Visão geral" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:100%\'>🌸</div>'" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIÊNCIA DO CLIENTE -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="two-col reverse">
+      <div class="col-img fade-up">
+        <div class="mini-img-grid">
+          <div class="img-wrap"><img src="imagens/catalogo-app.jpg" alt="Catálogo" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:100%;border-radius:var(--radius)\'>📱</div>'" /></div>
+          <div class="img-wrap"><img src="imagens/compra-simples.jpg" alt="Compra" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:100%;border-radius:var(--radius)\'>🛒</div>'" /></div>
+          <div class="img-wrap"><img src="imagens/whatsapp-pedido.jpg" alt="WhatsApp" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:100%;border-radius:var(--radius)\'>💬</div>'" /></div>
+        </div>
+      </div>
+      <div class="col-text fade-up d2">
+        <div class="tag">Para quem compra de você</div>
+        <h2>Seus clientes compram com facilidade — e voltam mais vezes</h2>
+        <p>O app cria uma vitrine digital elegante da Flor &amp; Sentido. Seus clientes acessam pelo celular, escolhem o arranjo ideal e finalizam o pedido em segundos — sem precisar ligar ou mandar mensagem.</p>
+        <div class="cards-grid" style="margin-top:1.8rem;grid-template-columns:1fr;">
+          <div class="card" style="padding:1.3rem 1.5rem;">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div class="card-icon" style="flex-shrink:0;">🌹</div>
+              <div><h3 style="font-size:1.05rem;margin-bottom:0.2rem;">Catálogo com suas fotos</h3><p style="font-size:0.87rem;">Seus arranjos com preços, descrições e opções de personalização — visíveis e bonitos no celular do cliente.</p></div>
+            </div>
+          </div>
+          <div class="card" style="padding:1.3rem 1.5rem;">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div class="card-icon" style="flex-shrink:0;">⚡</div>
+              <div><h3 style="font-size:1.05rem;margin-bottom:0.2rem;">Pedido em 3 toques</h3><p style="font-size:0.87rem;">Escolha, confirme e pronto. Sem formulário, sem ligação, sem espera.</p></div>
+            </div>
+          </div>
+          <div class="card" style="padding:1.3rem 1.5rem;">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div class="card-icon" style="flex-shrink:0;">💬</div>
+              <div><h3 style="font-size:1.05rem;margin-bottom:0.2rem;">Pedidos chegam no WhatsApp</h3><p style="font-size:0.87rem;">Você recebe cada pedido com todos os detalhes direto no WhatsApp da floricultura.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JORNADA -->
+<section class="section">
+  <div class="container">
+    <div class="section-header center fade-up">
+      <div class="tag">Como funciona</div>
+      <h2>A jornada do cliente dentro do sistema</h2>
+      <p>Do primeiro acesso até virar cliente recorrente — tudo acontece de forma natural e automática, sem esforço da sua parte.</p>
+    </div>
+    <div class="steps">
+      <div class="step fade-up d1"><div class="step-num">01</div><h3>Encontra sua floricultura</h3><p>Via link, QR code, indicação ou campanha — e acessa o catálogo direto no celular.</p></div>
+      <div class="step fade-up d2"><div class="step-num">02</div><h3>Escolhe o arranjo</h3><p>Navega pelas fotos, escolhe o que mais combina com o momento e personaliza se quiser.</p></div>
+      <div class="step fade-up d3"><div class="step-num">03</div><h3>Faz o pedido</h3><p>Confirma endereço e horário. Tudo em segundos, pelo celular, sem precisar ligar.</p></div>
+      <div class="step fade-up d4"><div class="step-num">04</div><h3>Sistema registra tudo</h3><p>Preferências, histórico e datas especiais ficam salvos para ações futuras automáticas.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <div class="container">
+    <blockquote class="fade-up">
+      A floricultura que conhece seus clientes pelo nome e pelas datas que importam para eles nunca precisa competir por preço.
+    </blockquote>
+  </div>
+</div>
+
+<!-- CRM -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="two-col">
+      <div class="col-text fade-up">
+        <div class="tag">Gestão de clientes</div>
+        <h2>A Flor &amp; Sentido vai conhecer cada cliente de verdade</h2>
+        <p>O sistema cria automaticamente um perfil completo de cada pessoa que compra de você. Nome, o que pediu, quando comprou, quais são as datas que importam pra ela — tudo registrado sem nenhum trabalho manual.</p>
+        <ul class="feature-list">
+          <li>Cadastro automático no primeiro pedido — sem você precisar fazer nada</li>
+          <li>Histórico completo de compras por cliente</li>
+          <li>Datas especiais detectadas e salvas automaticamente</li>
+          <li>Segmentação por frequência de compra, valor gasto e bairro</li>
+        </ul>
+        <div class="highlight-box">
+          <p>💡 <strong>Na prática:</strong> o sistema percebe que um cliente comprou rosas no aniversário da esposa ano passado. Em fevereiro, ele recebe automaticamente uma mensagem com uma sugestão personalizada — antes mesmo de lembrar da data.</p>
+        </div>
+      </div>
+      <div class="col-img fade-up d2">
+        <div class="img-wrap"><img src="imagens/crm-clientes.jpg" alt="CRM" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:480px\'>👥</div>'" /></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECUPERAÇÃO -->
+<section class="section">
+  <div class="container">
+    <div class="two-col reverse">
+      <div class="col-img fade-up">
+        <div class="img-wrap"><img src="imagens/recuperacao-clientes.jpg" alt="Recuperação" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:480px\'>🔄</div>'" /></div>
+      </div>
+      <div class="col-text fade-up d2">
+        <div class="tag">Recuperação automática</div>
+        <h2>Clientes que sumiram? O sistema vai buscar eles por você</h2>
+        <p>Quem para de comprar é dinheiro parado. O sistema identifica quem ficou inativo e manda automaticamente uma mensagem personalizada com uma oferta para voltar — sem você precisar fazer nada.</p>
+        <div class="cards-grid" style="margin-top:1.8rem;grid-template-columns:1fr 1fr;">
+          <div class="card"><div class="card-icon">📡</div><h3>Detecta inatividade</h3><p>30, 60 ou 90 dias sem compra — o sistema sinaliza e age automaticamente.</p></div>
+          <div class="card"><div class="card-icon">💌</div><h3>Mensagem personalizada</h3><p>Com o nome do cliente e uma oferta criada especificamente para o perfil dele.</p></div>
+          <div class="card"><div class="card-icon">🎁</div><h3>Cupons automáticos</h3><p>Gerados e enviados sem nenhuma ação manual da sua parte.</p></div>
+          <div class="card"><div class="card-icon">📈</div><h3>Acompanhe os resultados</h3><p>Veja quantos clientes voltaram e quanto faturamento foi recuperado.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IA -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="two-col">
+      <div class="col-text fade-up">
+        <div class="tag">Inteligência integrada</div>
+        <h2>O sistema analisa e sugere — você só aprova</h2>
+        <p>Com base no histórico real da Flor &amp; Sentido, o sistema gera sugestões automáticas: quais arranjos promover essa semana, quais clientes têm mais chance de comprar, qual o melhor horário para enviar uma campanha.</p>
+        <ul class="feature-list">
+          <li>Sugestões de arranjos em alta com base no histórico real de vendas</li>
+          <li>Previsão de quais clientes vão comprar nos próximos 15 dias</li>
+          <li>Melhor horário para enviar mensagens por perfil de cliente</li>
+          <li>Identificação de combos que aumentam o valor médio de cada pedido</li>
+        </ul>
+      </div>
+      <div class="col-img fade-up d2">
+        <div class="img-wrap"><img src="imagens/inteligencia-ia.jpg" alt="IA" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:480px\'>🤖</div>'" /></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAMPANHAS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header center fade-up">
+      <div class="tag">Campanhas</div>
+      <h2>A mensagem certa, para a pessoa certa, na hora certa</h2>
+      <p>Nada de mensagem genérica para todo mundo. O sistema segmenta sua base e entrega cada campanha para quem realmente tem interesse.</p>
+    </div>
+    <div class="cards-grid fade-up">
+      <div class="card"><div class="card-icon">📍</div><h3>Por bairro</h3><p>Alcance clientes num raio específico com ofertas de entrega expressa ou frete grátis para a região.</p></div>
+      <div class="card"><div class="card-icon">🎯</div><h3>Por perfil de compra</h3><p>Quem compra muito, quem comprou uma vez, quem compra só em datas — cada perfil recebe uma comunicação diferente.</p></div>
+      <div class="card"><div class="card-icon">⚙️</div><h3>Automáticas por data</h3><p>Dia das Mães, Namorados, Natal — programadas com antecedência e disparadas automaticamente pelo sistema.</p></div>
+      <div class="card"><div class="card-icon">📊</div><h3>Resultados em tempo real</h3><p>Você vê quem abriu, quem clicou e quantas vendas cada campanha gerou — direto no painel.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ASSINATURAS EMPRESARIAIS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="two-col reverse">
+      <div class="col-img fade-up">
+        <div class="img-wrap"><img src="imagens/assinaturas-empresariais.jpg" alt="Empresas" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:480px\'>🏢</div>'" /></div>
+      </div>
+      <div class="col-text fade-up d2">
+        <div class="tag">Módulo empresarial</div>
+        <h2>Empresas da cidade pagando todo mês para homenagear seus funcionários</h2>
+        <p>Essa é a parte que cria uma receita previsível para a Flor &amp; Sentido — independente de sazonalidade. Empresas locais assinam um plano e o sistema cuida de todo o resto automaticamente.</p>
+        <ul class="feature-list">
+          <li>Empresa assina o plano e recebe login e senha do painel exclusivo</li>
+          <li>O RH cadastra os funcionários: nome, data de nascimento, endereço e melhor horário de entrega</li>
+          <li>No aniversário de cada colaborador, as flores são separadas e entregues automaticamente</li>
+          <li>Empresa recebe relatório mensal de todas as entregas realizadas</li>
+          <li>Cobrança recorrente via CNPJ — sem faturar pedido por pedido</li>
+        </ul>
+        <div class="highlight-box">
+          <p>🏆 <strong>Exemplo real:</strong> uma empresa com 40 funcionários no plano Especial gera sozinha <strong>R$6.360/mês</strong> em receita previsível para a Flor &amp; Sentido — todo mês, independente de datas comemorativas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANOS EMPRESARIAIS -->
+<section class="section" id="planos">
+  <div class="container">
+    <div class="section-header center fade-up">
+      <div class="tag">Sugestão — Planos de assinatura para empresas</div>
+      <h2>Flores todo mês, escolhidas com cuidado</h2>
+      <p>A empresa escolhe o plano, assina e pronto. O sistema detecta os aniversários dos funcionários, organiza a entrega no horário certo e ninguém precisa lembrar de nada.</p>
+    </div>
+
+    <div class="business-flow fade-up">
+      <div class="bflow-step">
+        <div class="bflow-icon">🔐</div>
+        <div class="bflow-text"><strong>1. Empresa assina o plano</strong><span>Escolhe o pacote e paga mensalmente via CNPJ.</span></div>
+      </div>
+      <div class="bflow-arrow">→</div>
+      <div class="bflow-step">
+        <div class="bflow-icon">💻</div>
+        <div class="bflow-text"><strong>2. Recebe login &amp; senha</strong><span>Acesso ao painel exclusivo de gestão de colaboradores.</span></div>
+      </div>
+      <div class="bflow-arrow">→</div>
+      <div class="bflow-step">
+        <div class="bflow-icon">👥</div>
+        <div class="bflow-text"><strong>3. Cadastra os funcionários</strong><span>Nome, aniversário, endereço e melhor horário de entrega.</span></div>
+      </div>
+      <div class="bflow-arrow">→</div>
+      <div class="bflow-step">
+        <div class="bflow-icon">🌹</div>
+        <div class="bflow-text"><strong>4. Sistema entrega sozinho</strong><span>No aniversário de cada colaborador, as flores chegam. Sem esforço adicional.</span></div>
+      </div>
+    </div>
+
+    <div class="pricing-grid fade-up" style="margin-top:3.5rem;">
+      <div class="plan">
+        <div class="plan-name">Essencial</div>
+        <div class="plan-price"><span>R$</span>109</div>
+        <div class="plan-period">por funcionário / mês</div>
+        <div class="plan-desc">O básico feito com cuidado — ideal para começar a valorizar o time.</div>
+        <hr class="plan-divider" />
+        <ul class="plan-features">
+          <li>Arranjo simples selecionado com carinho</li>
+          <li>Cartão de mensagem básico incluso</li>
+          <li>Entrega padrão agendada pelo sistema</li>
+          <li>Variação sazonal de flores</li>
+          <li>Painel de gestão de funcionários</li>
+          <li>Cadastro de nome, data de nascimento e endereço</li>
+          <li>Definição do melhor horário de entrega por colaborador</li>
+        </ul>
+      </div>
+      <div class="plan featured">
+        <div class="plan-badge">Mais popular</div>
+        <div class="plan-name">Especial</div>
+        <div class="plan-price"><span>R$</span>159</div>
+        <div class="plan-period">por funcionário / mês</div>
+        <div class="plan-desc">Mais presença, mais impacto — o colaborador se sente lembrado de verdade.</div>
+        <hr class="plan-divider" />
+        <ul class="plan-features">
+          <li>Arranjo premium com flores selecionadas</li>
+          <li>Cartão personalizado com mensagem sugerida pela empresa</li>
+          <li>Entrega com embalagem presenteável</li>
+          <li>Aniversariante recebe dica especial sobre flores uma vez por mês</li>
+          <li>Painel completo com histórico de entregas por colaborador</li>
+          <li>Relatório mensal para o RH</li>
+          <li>Definição do melhor horário de entrega por colaborador</li>
+        </ul>
+      </div>
+      <div class="plan">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price"><span>R$</span>229</div>
+        <div class="plan-period">por funcionário / mês</div>
+        <div class="plan-desc">A experiência completa — um momento que o funcionário não esquece.</div>
+        <hr class="plan-divider" />
+        <ul class="plan-features">
+          <li>Combo completo: flores + presente adicional</li>
+          <li>Cartão artesanal com a identidade visual da empresa</li>
+          <li>Entrega prioritária com hora marcada pelo RH</li>
+          <li>Chocolate e mimo especial inclusos</li>
+          <li>Painel avançado com dashboard de engajamento</li>
+          <li>Relatório com registro fotográfico das entregas</li>
+          <li>Suporte dedicado ao gestor de RH</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="plan-info-note fade-up">
+      <div class="pin-icon">💡</div>
+      <div>
+        <strong>Como funciona na prática para a empresa</strong>
+        <p>Após assinar, a empresa recebe acesso imediato ao painel. O gestor de RH entra, cadastra os funcionários com nome, data de nascimento, endereço e o melhor horário para receber. A partir daí o sistema assume: no aniversário de cada colaborador, as flores são separadas, embaladas e entregues no horário certo — sem nenhuma ligação, nenhum pedido manual, nenhuma preocupação.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAINEL ADMIN -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header center fade-up">
+      <div class="tag">Seu painel de controle</div>
+      <h2>Tudo da Flor &amp; Sentido em uma tela só</h2>
+      <p>Pedidos, clientes, campanhas, assinaturas e relatórios — organizados de forma simples para usar no dia a dia.</p>
+    </div>
+    <div class="dashboard-mockup fade-up">
+      <div class="mockup-bar">
+        <div class="mockup-dot" style="background:#ff5f57;"></div>
+        <div class="mockup-dot" style="background:#febc2e;"></div>
+        <div class="mockup-dot" style="background:#28c840;"></div>
+        <span style="margin-left:1rem;color:rgba(255,255,255,0.45);font-size:0.78rem;">Flor &amp; Sentido — Painel da floricultura</span>
+      </div>
+      <div class="mockup-layout">
+        <div class="mockup-sidebar">
+          <div class="mockup-nav-item active">📊 Visão geral</div>
+          <div class="mockup-nav-item">🛒 Pedidos</div>
+          <div class="mockup-nav-item">👥 Clientes</div>
+          <div class="mockup-nav-item">📣 Campanhas</div>
+          <div class="mockup-nav-item">🏢 Empresas</div>
+          <div class="mockup-nav-item">💳 Assinaturas</div>
+          <div class="mockup-nav-item">📈 Relatórios</div>
+          <div class="mockup-nav-item">⚙️ Configurações</div>
+        </div>
+        <div class="mockup-main">
+          <div class="mockup-kpis">
+            <div class="kpi"><div class="kpi-val">R$8.4k</div><div class="kpi-lbl">Faturamento do mês</div></div>
+            <div class="kpi"><div class="kpi-val">234</div><div class="kpi-lbl">Pedidos realizados</div></div>
+            <div class="kpi"><div class="kpi-val">87</div><div class="kpi-lbl">Assinantes ativos</div></div>
+          </div>
+          <div class="mockup-chart-area"><canvas id="miniChart" height="120"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GERAÇÃO DE CLIENTES -->
+<section class="section">
+  <div class="container">
+    <div class="two-col">
+      <div class="col-text fade-up">
+        <div class="tag">Novos clientes</div>
+        <h2>A Flor &amp; Sentido não para de crescer</h2>
+        <p>Além de fidelizar quem já compra, o sistema é uma máquina de atrair clientes novos — por indicação, por campanhas geolocalizadas e pelos momentos que mais importam para cada pessoa.</p>
+        <div class="cards-grid" style="grid-template-columns:1fr;margin-top:1.5rem;gap:1rem;">
+          <div class="card" style="padding:1.3rem;">
+            <div style="display:flex;gap:14px;align-items:center;">
+              <div class="card-icon" style="flex-shrink:0;">🤝</div>
+              <div><h3 style="font-size:1rem;margin-bottom:0.2rem;">Programa de indicação</h3><p style="font-size:0.86rem;">Cada cliente tem um link único. Indicou um amigo, ganhou desconto. Tudo automático.</p></div>
+            </div>
+          </div>
+          <div class="card" style="padding:1.3rem;">
+            <div style="display:flex;gap:14px;align-items:center;">
+              <div class="card-icon" style="flex-shrink:0;">📍</div>
+              <div><h3 style="font-size:1rem;margin-bottom:0.2rem;">Campanhas por bairro</h3><p style="font-size:0.86rem;">Alcance pessoas próximas à floricultura com ofertas de entrega rápida ou frete grátis.</p></div>
+            </div>
+          </div>
+          <div class="card" style="padding:1.3rem;">
+            <div style="display:flex;gap:14px;align-items:center;">
+              <div class="card-icon" style="flex-shrink:0;">🎂</div>
+              <div><h3 style="font-size:1rem;margin-bottom:0.2rem;">Datas especiais como gatilho</h3><p style="font-size:0.86rem;">O sistema detecta aniversários e datas importantes e age antes mesmo do cliente lembrar.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-img fade-up d2">
+        <div class="img-wrap"><img src="imagens/geracao-clientes.jpg" alt="Geração de clientes" onerror="this.outerHTML='<div class=\'img-placeholder\' style=\'min-height:480px\'>🌱</div>'" /></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header center fade-up">
+      <div class="tag">O que muda na prática</div>
+      <h2>O que esse sistema pode fazer pela Flor &amp; Sentido</h2>
+      <p>Projeções baseadas no modelo proposto para a sua floricultura.</p>
+    </div>
+    <div class="results-grid fade-up">
+      <div class="result-card"><span class="result-num">+47%</span><p>Aumento médio no faturamento mensal</p></div>
+      <div class="result-card"><span class="result-num">3×</span><p>Mais frequência de compra por cliente</p></div>
+      <div class="result-card"><span class="result-num">68%</span><p>Taxa de reativação de clientes inativos</p></div>
+      <div class="result-card"><span class="result-num">R$0</span><p>Custo de setup — pronto para usar no primeiro dia</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GRÁFICO -->
+<section class="section">
+  <div class="container">
+    <div class="section-header center fade-up">
+      <div class="tag">Projeção de crescimento</div>
+      <h2>Como o faturamento evolui com o sistema ativo</h2>
+      <p>Comparativo entre o faturamento médio sem sistema e com o Flor &amp; Sentido funcionando ao longo de 12 meses.</p>
+    </div>
+    <div class="chart-wrap fade-up" style="margin-top:2.5rem;">
+      <canvas id="growthChart" style="max-height:400px;"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="container">
+    <div class="tag" style="background:rgba(168,197,172,0.12);color:rgba(255,255,255,0.55);">Próximo passo</div>
+    <h2>Gostou do que viu?<br/><em style="font-style:italic;color:var(--blush);font-family:'Cormorant Garamond',serif;">Vamos conversar sobre isso.</em></h2>
+    <p class="sub">Desenvolvi esse projeto pensando especificamente na Flor &amp; Sentido. Se fizer sentido para você, a gente conversa sem compromisso sobre como colocar tudo isso em prática.</p>
+    <p class="assinatura">— Rodrigo</p>
+    <a href="https://wa.me/5511947736808?text=Oi%20Rodrigo,%20gostaria%20de%20falar%20sobre%20o%20app%20de%20flores" target="_blank" class="btn btn-whatsapp" style="font-size:1.05rem;padding:18px 44px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Falar sobre a proposta
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>
+      Proposta desenvolvida por <span>Rodrigo</span> para a <span>Flor &amp; Sentido</span><br/>
+      Este material foi preparado exclusivamente para esta floricultura.<br/>
+      <a href="https://wa.me/5511947736808?text=Oi%20Rodrigo,%20gostaria%20de%20falar%20sobre%20o%20app%20de%20flores" target="_blank">Falar com Rodrigo pelo WhatsApp →</a>
+    </p>
+  </div>
+</footer>
+
+<a href="https://wa.me/5511947736808?text=Oi%20Rodrigo,%20gostaria%20de%20falar%20sobre%20o%20app%20de%20flores" target="_blank" class="float-wa" title="Falar com Rodrigo">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+const miniCtx = document.getElementById('miniChart');
+if (miniCtx) {
+  new Chart(miniCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+      datasets: [{ data: [12,19,8,25,22,35,18], backgroundColor: 'rgba(122,158,126,0.28)', borderColor: 'rgba(78,113,83,0.7)', borderWidth: 2, borderRadius: 6 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#9A9A9A' } }, y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { size: 11 }, color: '#9A9A9A' } } } }
+  });
+}
+
+const growthCtx = document.getElementById('growthChart');
+if (growthCtx) {
+  new Chart(growthCtx, {
+    type: 'line',
+    data: {
+      labels: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+      datasets: [
+        { label: 'Sem o sistema', data: [4200,3800,4100,4400,5800,4600,3900,4200,4500,6200,8400,7100], borderColor: '#D4956A', backgroundColor: 'rgba(212,149,106,0.07)', borderWidth: 2, pointRadius: 4, pointBackgroundColor: '#D4956A', tension: 0.4, fill: true },
+        { label: 'Com o sistema Flor & Sentido', data: [4200,5100,6300,7400,9100,9800,10400,11200,12100,13500,15800,17200], borderColor: '#4E7153', backgroundColor: 'rgba(78,113,83,0.09)', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#4E7153', tension: 0.4, fill: true }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { font: { family: 'DM Sans', size: 13 }, color: '#5A5A5A', padding: 24, usePointStyle: true } },
+        tooltip: { callbacks: { label: ctx => ' R$ ' + ctx.raw.toLocaleString('pt-BR') } }
+      },
+      scales: {
+        x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'DM Sans', size: 12 }, color: '#9A9A9A' } },
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'DM Sans', size: 12 }, color: '#9A9A9A', callback: v => 'R$ '+(v/1000).toFixed(0)+'k' } }
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
 
