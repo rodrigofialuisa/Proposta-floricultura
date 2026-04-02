@@ -2,138 +2,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Proposta • Floricultura Inteligente</title>
+  <title>Flor & Sentido</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <style>
     :root{
-      --green:#1b5e20;
-      --green-2:#2e7d32;
-      --pink:#f8bbd0;
+      --primary:#1b5e20;
+      --secondary:#2e7d32;
+      --accent:#f8bbd0;
       --bg:#f5f7f6;
-      --card:#ffffff;
       --text:#263238;
-      --muted:#607d8b;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:'Inter',system-ui,Arial;background:var(--bg);color:var(--text)}
-    header{background:linear-gradient(135deg,var(--green),var(--green-2));color:#fff;padding:56px 20px 72px}
-    .container{max-width:1100px;margin:0 auto;padding:0 20px}
-    .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
-    .hero h1{font-size:38px;margin:0 0 12px}
-    .hero p{font-size:16px;opacity:.95}
-    .cta{margin-top:18px;display:flex;gap:12px}
-    .btn{padding:12px 18px;border-radius:12px;border:0;font-weight:600;cursor:pointer}
-    .btn.primary{background:#fff;color:var(--green)}
-    .btn.secondary{background:rgba(255,255,255,.15);color:#fff}
-    .hero img{width:100%;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.2)}section{margin-top:-40px}
-.card{background:var(--card);border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 10px 25px rgba(0,0,0,.08)}
-h2{margin:0 0 10px;color:var(--green)}
-h3{margin:16px 0 6px}
-p{line-height:1.6}
-ul{margin:8px 0 0 18px}
 
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.pill{background:#eef6f0;border-radius:999px;padding:8px 12px;font-size:12px;color:var(--green)}
+    *{margin:0;padding:0;box-sizing:border-box}
 
-.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.img{width:100%;border-radius:14px}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
 
-.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.plan{border:1px solid #e6ecea;border-radius:16px;padding:18px}
-.price{font-size:28px;font-weight:700;margin:6px 0}
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:20px;
+    }
 
-footer{padding:40px 20px;color:#fff;background:var(--green);margin-top:30px}
-.footer{display:flex;justify-content:space-between;align-items:center;gap:16px}
+    header{
+      position:relative;
+      height:90vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:white;
+    }
 
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr}
-  .grid,.plans,.two{grid-template-columns:1fr}
-  header{padding-bottom:40px}
-}
+    header img{
+      position:absolute;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      top:0;
+      left:0;
+      z-index:-1;
+    }
 
-  </style>
-</head>
+    header::after{
+      content:"";
+      position:absolute;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.45);
+      top:0;
+      left:0;
+      z-index:-1;
+    }
+
+    header h1{
+      font-size:42px;
+      margin-bottom:10px;
+    }
+
+    header p{
+      font-size:18px;
+      max-width:600px;
+      margin:0 auto;
+    }
+
+    .btn{
+      margin-top:20px;
+      padding:12px 20px;
+      border-radius:10px;
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    .btn.primary{background:white;color:var(--primary)}
+
+    section{
+      margin-top:40px;
+    }
+
+    .card{
+      background:white;
+      padding:25px;
+      border-radius:15px;
+      margin-bottom:20px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    h2{
+      color:var(--primary);
+      margin-bottom:10px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+      align-items:center;
+    }
+
+    .grid img{
+      width:100%;
+      border-radius:12px;
+    }
+
+    .plans{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+    }
+
+    .plan{
+      background:white;
+      padding:20px;
+      border-radius:15px;
+      text-align:center;
+      box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .price{
+      font-size:28px;
+      font-weight:bold;
+      margin:10px 0;
+    }
+
+    footer{
+      margin-top:40px;
+      padding:30px;
+      text-align:center;
+      background:var(--primary);
+      color:white;
+    }
+
+    @media(max-width:768px){
+      header h1{font-size:30px}
+      .grid{grid-template-columns:1fr}
+      .plans{grid-template-columns:1fr}
+    }
+  </style></head>
 <body><header>
-  <div class="container hero">
-    <div>
-      <h1>Proposta de Aplicativo para Floricultura</h1>
-      <p>Uma plataforma completa para gerar clientes, automatizar vendas e criar receita recorrente com inteligência e campanhas.</p>
-      <div class="cta">
-        <button class="btn primary">Aprovar projeto</button>
-        <button class="btn secondary">Falar no WhatsApp</button>
-      </div>
-    </div>
-    <img src="imagens/hero.jpg" alt="Flores"/>
+  <img src="imagens/hero.jpg" alt="Flor & Sentido">
+  <div>
+    <h1>Flor & Sentido</h1>
+    <p>Mais do que flores. Uma experiência emocional que gera conexão, recorrência e crescimento para a floricultura.</p>
+    <button class="btn primary">Aprovar projeto</button>
   </div>
-</header><section class="container">  <div class="card">
+</header><div class="container">  <section class="card">
     <h2>Visão Geral</h2>
-    <p>O sistema transforma a floricultura em um negócio digital com três pilares:</p>
-    <div class="grid">
-      <div class="pill">Geração de novos clientes</div>
-      <div class="pill">Aumento da frequência de compra</div>
-      <div class="pill">Receita recorrente</div>
-    </div>
-  </div>  <div class="card two">
+    <p>O sistema transforma a floricultura em um negócio previsível, automatizado e escalável, com foco em novos clientes, recorrência e receita contínua.</p>
+  </section>  <section class="card grid">
     <div>
-      <h2>Cliente Final</h2>
-      <p>Compra simples, rápida e direta pelo app ou WhatsApp.</p>
-      <ul>
-        <li>Catálogo organizado</li>
-        <li>Compra com poucos cliques</li>
-        <li>Pagamento ou WhatsApp</li>
-      </ul>
+      <h2>Experiência do Cliente</h2>
+      <p>O cliente acessa o catálogo, escolhe e compra de forma simples, podendo pagar online ou via WhatsApp.</p>
     </div>
-    <img class="img" src="imagens/catalogo.jpg" alt="Catálogo"/>
-  </div>  <div class="card">
-    <h2>Gestão de Clientes (CRM)</h2>
-    <p>Todo cliente vira ativo do negócio. O sistema registra e trabalha continuamente.</p>
-    <ul>
-      <li>Cadastro automático</li>
-      <li>Histórico de compras</li>
-      <li>Identificação de inativos</li>
-      <li>Recuperação automática</li>
-    </ul>
-  </div>  <div class="card two">
+    <img src="imagens/catalogo.jpg" alt="Catálogo">
+  </section>  <section class="card grid">
+    <img src="imagens/ia.jpg" alt="IA">
     <div>
-      <h2>Inteligência (IA)</h2>
-      <p>Analisa dados e sugere ações práticas para vender mais.</p>
-      <ul>
-        <li>Melhores produtos</li>
-        <li>Horários de venda</li>
-        <li>Combos inteligentes</li>
-      </ul>
+      <h2>Inteligência do Sistema</h2>
+      <p>O sistema analisa dados e sugere estratégias para aumentar vendas, melhorar produtos e recuperar clientes automaticamente.</p>
     </div>
-    <img class="img" src="imagens/ia.jpg" alt="IA"/>
-  </div>  <div class="card">
-    <h2>Campanhas Automatizadas</h2>
-    <p>Envio segmentado via WhatsApp por bairro, perfil ou comportamento.</p>
-  </div>  <div class="card">
-    <h2>Assinaturas Empresariais</h2>
-    <p>Empresas cadastram funcionários e automatizam entregas mensais de aniversário.</p>
-  </div>  <div class="card">
-    <h2>Painel Administrativo</h2>
-    <ul>
-      <li>Dashboard de faturamento</li>
-      <li>Gestão de pedidos e produtos</li>
-      <li>CRM completo</li>
-      <li>Campanhas e relatórios</li>
-    </ul>
-  </div>  <div class="card">
+  </section>  <section class="card">
     <h2>Impacto no Negócio</h2>
     <canvas id="grafico"></canvas>
-  </div>  <div class="card">
-    <h2>Planos Sugeridos</h2>
+  </section>  <section class="card">
+    <h2>Planos de Assinatura</h2>
     <div class="plans">
       <div class="plan">
         <h3>Básico</h3>
         <div class="price">R$ 99</div>
-        <p>Arranjo simples mensal</p>
+        <p>Arranjos simples mensais</p>
       </div>
       <div class="plan">
         <h3>Intermediário</h3>
         <div class="price">R$ 149</div>
-        <p>Arranjo + cartão</p>
+        <p>Arranjos + cartão</p>
       </div>
       <div class="plan">
         <h3>Premium</h3>
@@ -141,11 +188,8 @@ footer{padding:40px 20px;color:#fff;background:var(--green);margin-top:30px}
         <p>Combo completo</p>
       </div>
     </div>
-  </div></section><footer>
-  <div class="container footer">
-    <div>Proposta Floricultura Inteligente</div>
-    <div>Projeto estratégico para crescimento</div>
-  </div>
+  </section></div><footer>
+  <p>Flor & Sentido — Sistema inteligente para crescimento de floriculturas</p>
 </footer><script>
 new Chart(document.getElementById('grafico'),{
  type:'line',
