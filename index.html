@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposta • Floricultura Inteligente</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --green:#1b5e20;
+      --green-2:#2e7d32;
+      --pink:#f8bbd0;
+      --bg:#f5f7f6;
+      --card:#ffffff;
+      --text:#263238;
+      --muted:#607d8b;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Inter',system-ui,Arial;background:var(--bg);color:var(--text)}
+    header{background:linear-gradient(135deg,var(--green),var(--green-2));color:#fff;padding:56px 20px 72px}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
+    .hero h1{font-size:38px;margin:0 0 12px}
+    .hero p{font-size:16px;opacity:.95}
+    .cta{margin-top:18px;display:flex;gap:12px}
+    .btn{padding:12px 18px;border-radius:12px;border:0;font-weight:600;cursor:pointer}
+    .btn.primary{background:#fff;color:var(--green)}
+    .btn.secondary{background:rgba(255,255,255,.15);color:#fff}
+    .hero img{width:100%;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.2)}section{margin-top:-40px}
+.card{background:var(--card);border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 10px 25px rgba(0,0,0,.08)}
+h2{margin:0 0 10px;color:var(--green)}
+h3{margin:16px 0 6px}
+p{line-height:1.6}
+ul{margin:8px 0 0 18px}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pill{background:#eef6f0;border-radius:999px;padding:8px 12px;font-size:12px;color:var(--green)}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.img{width:100%;border-radius:14px}
+
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.plan{border:1px solid #e6ecea;border-radius:16px;padding:18px}
+.price{font-size:28px;font-weight:700;margin:6px 0}
+
+footer{padding:40px 20px;color:#fff;background:var(--green);margin-top:30px}
+.footer{display:flex;justify-content:space-between;align-items:center;gap:16px}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .grid,.plans,.two{grid-template-columns:1fr}
+  header{padding-bottom:40px}
+}
+
+  </style>
+</head>
+<body><header>
+  <div class="container hero">
+    <div>
+      <h1>Proposta de Aplicativo para Floricultura</h1>
+      <p>Uma plataforma completa para gerar clientes, automatizar vendas e criar receita recorrente com inteligência e campanhas.</p>
+      <div class="cta">
+        <button class="btn primary">Aprovar projeto</button>
+        <button class="btn secondary">Falar no WhatsApp</button>
+      </div>
+    </div>
+    <img src="imagens/hero.jpg" alt="Flores"/>
+  </div>
+</header><section class="container">  <div class="card">
+    <h2>Visão Geral</h2>
+    <p>O sistema transforma a floricultura em um negócio digital com três pilares:</p>
+    <div class="grid">
+      <div class="pill">Geração de novos clientes</div>
+      <div class="pill">Aumento da frequência de compra</div>
+      <div class="pill">Receita recorrente</div>
+    </div>
+  </div>  <div class="card two">
+    <div>
+      <h2>Cliente Final</h2>
+      <p>Compra simples, rápida e direta pelo app ou WhatsApp.</p>
+      <ul>
+        <li>Catálogo organizado</li>
+        <li>Compra com poucos cliques</li>
+        <li>Pagamento ou WhatsApp</li>
+      </ul>
+    </div>
+    <img class="img" src="imagens/catalogo.jpg" alt="Catálogo"/>
+  </div>  <div class="card">
+    <h2>Gestão de Clientes (CRM)</h2>
+    <p>Todo cliente vira ativo do negócio. O sistema registra e trabalha continuamente.</p>
+    <ul>
+      <li>Cadastro automático</li>
+      <li>Histórico de compras</li>
+      <li>Identificação de inativos</li>
+      <li>Recuperação automática</li>
+    </ul>
+  </div>  <div class="card two">
+    <div>
+      <h2>Inteligência (IA)</h2>
+      <p>Analisa dados e sugere ações práticas para vender mais.</p>
+      <ul>
+        <li>Melhores produtos</li>
+        <li>Horários de venda</li>
+        <li>Combos inteligentes</li>
+      </ul>
+    </div>
+    <img class="img" src="imagens/ia.jpg" alt="IA"/>
+  </div>  <div class="card">
+    <h2>Campanhas Automatizadas</h2>
+    <p>Envio segmentado via WhatsApp por bairro, perfil ou comportamento.</p>
+  </div>  <div class="card">
+    <h2>Assinaturas Empresariais</h2>
+    <p>Empresas cadastram funcionários e automatizam entregas mensais de aniversário.</p>
+  </div>  <div class="card">
+    <h2>Painel Administrativo</h2>
+    <ul>
+      <li>Dashboard de faturamento</li>
+      <li>Gestão de pedidos e produtos</li>
+      <li>CRM completo</li>
+      <li>Campanhas e relatórios</li>
+    </ul>
+  </div>  <div class="card">
+    <h2>Impacto no Negócio</h2>
+    <canvas id="grafico"></canvas>
+  </div>  <div class="card">
+    <h2>Planos Sugeridos</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>Básico</h3>
+        <div class="price">R$ 99</div>
+        <p>Arranjo simples mensal</p>
+      </div>
+      <div class="plan">
+        <h3>Intermediário</h3>
+        <div class="price">R$ 149</div>
+        <p>Arranjo + cartão</p>
+      </div>
+      <div class="plan">
+        <h3>Premium</h3>
+        <div class="price">R$ 219</div>
+        <p>Combo completo</p>
+      </div>
+    </div>
+  </div></section><footer>
+  <div class="container footer">
+    <div>Proposta Floricultura Inteligente</div>
+    <div>Projeto estratégico para crescimento</div>
+  </div>
+</footer><script>
+new Chart(document.getElementById('grafico'),{
+ type:'line',
+ data:{
+  labels:['Jan','Fev','Mar','Abr','Mai','Jun'],
+  datasets:[
+    {label:'Antes',data:[8000,8500,8200,9000,8700,9200]},
+    {label:'Depois',data:[9000,12000,15000,18000,21000,24000]}
+  ]
+ }
+});
+</script></body>
+</html>
